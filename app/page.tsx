@@ -1,11 +1,12 @@
 import { Header } from '@/components/layout/Header';
+import { About } from '@/components/sections/About';
 
 export default function Home() {
   return (
-    <main className="bg-background text-foreground min-h-screen">
+    <main className="bg-background text-foreground selection:bg-accent min-h-screen selection:text-white">
       <Header />
 
-      <div className="space-y-4 px-6 pt-32 text-center" />
+      <About />
     </main>
   );
 }
