@@ -21,14 +21,15 @@ export function Hero() {
 
         <h1 className="text-coffee font-serif text-5xl leading-[1.1] font-bold md:text-7xl lg:text-8xl">
           나만 생각하는 <br />
-          <span className="text-gradient">이타적인 개발자</span> 최원형
+          <span className="text-gradient">이타적인 개발자</span>
+          <br /> 최원형
         </h1>
 
         <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed md:text-xl">
           사용자의 <span className="text-foreground font-bold">0.5초</span>를
-          지켜내는 집요함, 동료의{' '}
-          <span className="text-foreground font-bold">1시간</span>을 아껴주는
-          배려.
+          지켜내는 집요함,
+          <br /> 동료의 <span className="text-foreground font-bold">1시간</span>
+          을 아껴주는 배려
         </p>
 
         <div className="flex flex-col gap-4 pt-4 sm:flex-row">
