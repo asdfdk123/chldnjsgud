@@ -35,23 +35,10 @@ export function About() {
             <div className="text-muted-foreground space-y-4 text-lg leading-relaxed">
               <p>
                 <strong className="text-foreground mb-2 block text-xl">
-                  갈등을 회피하지 않고 해결하는 중재자
+                  대표 한마디
                 </strong>
               </p>
-              <p>
-                개발은 혼자 하는 것이 아니라, 기획-디자인-개발이 맞물려 돌아가는
-                톱니바퀴와 같다고 생각합니다. 학생회장 시절 의견 충돌을 조율했던
-                경험은, 이제 <strong>동료가 이해하기 쉬운 코드</strong>를
-                작성하는 원동력이 되었습니다.
-              </p>
-              <p>
-                단순한 구현을 넘어,{' '}
-                <strong className="text-sage-dark bg-sage/10 rounded px-1">
-                  0.5초의 딜레이
-                </strong>
-                조차 허용하지 않는 집요함으로 사용자에게 매끄러운 경험을
-                선물하고 싶습니다.
-              </p>
+              <p>자기소개</p>
             </div>
           </div>
 
