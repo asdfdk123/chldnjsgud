@@ -1,5 +1,6 @@
 import { ExternalLink, Github, Zap, LayoutTemplate } from 'lucide-react';
 import { projects } from '@/src/data/projects';
+import { ProjectCarousel } from '@/src/components/sections/ProjectCarousel';
 
 export function Projects() {
   return (
@@ -18,29 +19,58 @@ export function Projects() {
           {projects.map((project, index) => (
             <article key={project.id} className="group">
               <div className="grid items-start gap-12 lg:grid-cols-12">
+                {/* ✅ 이미지 컬럼: wrapper 1개만 사용 */}
                 <div
-                  className={`relative flex min-h-[400px] items-center justify-center overflow-hidden rounded-3xl border transition-all duration-500 group-hover:shadow-lg lg:col-span-7 ${index % 2 === 1 ? 'lg:order-2' : 'lg:order-1'} ${project.color === 'sage' ? 'bg-sage/10 border-sage/20' : 'border-orange-100 bg-orange-50/50'} `}
+                  className={`relative overflow-hidden rounded-3xl border transition-all duration-500 group-hover:shadow-lg lg:col-span-7 ${
+                    index % 2 === 1 ? 'lg:order-2' : 'lg:order-1'
+                  } ${
+                    project.color === 'sage'
+                      ? 'bg-sage/10 border-sage/20'
+                      : 'border-orange-100 bg-orange-50/50'
+                  }`}
                 >
-                  <div className="space-y-2 text-center">
-                    <LayoutTemplate
-                      size={64}
-                      className={`mx-auto ${project.color === 'sage' ? 'text-sage/50' : 'text-orange-300'}`}
+                  {project.images?.length ? (
+                    <ProjectCarousel
+                      slides={project.images}
+                      tone={project.color}
+                      priority={index === 0}
                     />
-                    <span
-                      className={`block font-serif text-xl ${project.color === 'sage' ? 'text-sage' : 'text-orange-400'}`}
-                    >
-                      {project.imageText}
-                    </span>
-                  </div>
+                  ) : (
+                    <div className="flex w-full items-center justify-center">
+                      <div className="space-y-2 text-center">
+                        <LayoutTemplate
+                          size={64}
+                          className={`mx-auto ${
+                            project.color === 'sage'
+                              ? 'text-sage/50'
+                              : 'text-orange-300'
+                          }`}
+                        />
+                        <span
+                          className={`block font-serif text-xl ${
+                            project.color === 'sage'
+                              ? 'text-sage'
+                              : 'text-orange-400'
+                          }`}
+                        ></span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div
-                  className={`space-y-8 lg:col-span-5 ${index % 2 === 1 ? 'lg:order-1' : 'lg:order-2'}`}
+                  className={`space-y-8 lg:col-span-5 ${
+                    index % 2 === 1 ? 'lg:order-1' : 'lg:order-2'
+                  }`}
                 >
                   <div>
                     <div className="mb-3 flex items-center gap-3">
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-bold tracking-wider uppercase ${project.color === 'sage' ? 'bg-sage/20 text-sage-dark' : 'bg-orange-100 text-orange-700'} `}
+                        className={`rounded-full px-3 py-1 text-xs font-bold tracking-wider uppercase ${
+                          project.color === 'sage'
+                            ? 'bg-sage/20 text-sage-dark'
+                            : 'bg-orange-100 text-orange-700'
+                        }`}
                       >
                         {project.type}
                       </span>
@@ -72,10 +102,18 @@ export function Projects() {
                   </div>
 
                   <div
-                    className={`bg-cream rounded-2xl border p-6 shadow-sm ${project.color === 'sage' ? 'border-sage/20' : 'border-orange-200/50'} `}
+                    className={`bg-cream rounded-2xl border p-6 shadow-sm ${
+                      project.color === 'sage'
+                        ? 'border-sage/20'
+                        : 'border-orange-200/50'
+                    }`}
                   >
                     <h4
-                      className={`mb-4 flex items-center gap-2 border-b pb-2 font-bold ${project.color === 'sage' ? 'text-sage-dark border-sage/10' : 'border-orange-200/50 text-orange-700'} `}
+                      className={`mb-4 flex items-center gap-2 border-b pb-2 font-bold ${
+                        project.color === 'sage'
+                          ? 'text-sage-dark border-sage/10'
+                          : 'border-orange-200/50 text-orange-700'
+                      }`}
                     >
                       <Zap size={18} /> {project.troubleShooting.title}
                     </h4>

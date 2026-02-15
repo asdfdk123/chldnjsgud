@@ -2,7 +2,7 @@ import { Github, Mail, BookOpen } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-coffee text-cream border-t border-white/10 px-6 py-12">
+    <footer className="bg-coffee text-cream border-t border-white/10 px-6 py-12 lg:px-20">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row">
         <div className="space-y-2 text-center md:text-left">
           <h2 className="font-serif text-2xl font-bold">

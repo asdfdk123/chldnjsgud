@@ -15,7 +15,7 @@ export interface Project {
     github?: string;
     demo?: string;
   };
-  imageText: string;
+  images?: { src: string; alt: string }[];
   color: 'sage' | 'orange' | 'blue';
 }
 
@@ -43,11 +43,20 @@ export const projects: Project[] = [
         'React Query의 onMutate를 활용해 UI를 선제적으로 갱신(Optimistic Updates)하고, 실패 시 롤백하는 로직 구현.',
     },
     links: {
-      github: '#',
-      demo: '#',
+      github: 'https://github.com/teamPlantiful/plantiful.git',
+      demo: 'https://plantiful-ten.vercel.app/',
     },
-    imageText: 'Plantiful Screen',
     color: 'sage',
+    images: [
+      { src: '/projects/plantiful/plantiful.jpg', alt: 'Plantiful 화면 0' },
+      { src: '/projects/plantiful/plantiful1.jpg', alt: 'Plantiful 화면 1' },
+      { src: '/projects/plantiful/plantiful2.jpg', alt: 'Plantiful 화면 2' },
+      { src: '/projects/plantiful/plantiful3.jpg', alt: 'Plantiful 화면 3' },
+      { src: '/projects/plantiful/plantiful4.jpg', alt: 'Plantiful 화면 4' },
+      { src: '/projects/plantiful/plantiful5.jpg', alt: 'Plantiful 화면 5' },
+      { src: '/projects/plantiful/plantiful6.jpg', alt: 'Plantiful 화면 6' },
+      { src: '/projects/plantiful/plantiful7.jpg', alt: 'Plantiful 화면 7' },
+    ],
   },
   {
     id: 'used-market',
@@ -73,9 +82,45 @@ export const projects: Project[] = [
         'useChat 훅 내부에 대기열(Queue)을 구현. 연결 전 메시지는 큐에 쌓고, 연결 즉시 자동 전송(Flush)하여 전송 보장.',
     },
     links: {
-      github: '#',
+      github: 'https://github.com/asdfdk123/usedmarket.git',
     },
-    imageText: 'Used Market Screen',
+    images: [
+      {
+        src: '/projects/used-market/used-market1.png',
+        alt: 'Used Market 화면 1',
+      },
+      {
+        src: '/projects/used-market/used-market2.png',
+        alt: 'Used Market 화면 2',
+      },
+      {
+        src: '/projects/used-market/used-market3.png',
+        alt: 'Used Market 화면 3',
+      },
+    ],
     color: 'orange',
+  },
+  {
+    id: 'id',
+    title: '프로젝트 제목',
+    period: '기간',
+    type: 'Team Project',
+    summary: '요약',
+    description: '설명',
+    techStack: ['기술스택'],
+    troubleShooting: {
+      title: '제목',
+      problem: '문제',
+      solution: '해결',
+    },
+    links: {
+      github: '#',
+      demo: '#',
+    },
+    color: 'sage',
+    images: [
+      { src: '', alt: '예시 사진' },
+      { src: '', alt: '예시 사진' },
+    ],
   },
 ];
