@@ -1,5 +1,5 @@
 import { ExternalLink, Github, Zap, LayoutTemplate } from 'lucide-react';
-import { projects } from '@/data/projects';
+import { projects } from '@/src/data/projects';
 
 export function Projects() {
   return (
