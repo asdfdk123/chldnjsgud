@@ -9,8 +9,7 @@ import {
   SiVite,
 } from 'react-icons/si';
 import { TbBrandOauth } from 'react-icons/tb';
-// [NEW] 데이터 파일 불러오기
-import { techStack, history } from '@/data/profile';
+import { techStack, history } from '@/src/data/profile';
 
 export function About() {
   // 아이콘 매핑 함수 (데이터에는 이름만 있으므로)
