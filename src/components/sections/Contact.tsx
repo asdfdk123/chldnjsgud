@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { BookOpen, Check, Copy, Github, Mail, Send } from 'lucide-react';
 
 import { socialLinks } from '@/src/data/profile';
@@ -12,6 +13,9 @@ type FormState = {
 };
 
 export function Contact() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: '-60px' });
+
   const toEmail = useMemo(() => {
     const raw = socialLinks.email ?? '';
     return raw.startsWith('mailto:') ? raw.replace(/^mailto:/, '') : raw;
@@ -62,20 +66,31 @@ export function Contact() {
   };
 
   return (
-    <section id="#contact" className="bg-cream px-6 py-24 lg:px-20">
-      <div className="mx-auto w-full max-w-6xl">
-        <div className="mb-14 space-y-4 text-center">
+    <section id="contact" className="bg-cream px-6 py-24 lg:px-20">
+      <div ref={sectionRef} className="mx-auto w-full max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-14 space-y-4 text-center"
+        >
           <h2 className="text-coffee font-serif text-4xl md:text-5xl">
             Contact
           </h2>
           <p className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
             어떤 연락이든 모두 환영합니다.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
-          <div className="space-y-6">
-            <div className="card-warm bg-white/60 p-8 backdrop-blur-sm">
+          {/* 왼쪽: 빠른 연락 */}
+          <motion.div
+            initial={{ opacity: 0, x: -28 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.55, delay: 0.15 }}
+            className="space-y-6"
+          >
+            <div className="card-warm bg-white/60 p-8 backdrop-blur-sm transition-shadow duration-300 hover:shadow-md">
               <h3 className="text-coffee mb-5 flex items-center gap-2 font-serif text-2xl font-bold">
                 <Mail className="text-sage" size={22} />
                 빠른 연락
@@ -121,9 +136,15 @@ export function Contact() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="card-warm bg-white/60 p-8 backdrop-blur-sm">
+          {/* 오른쪽: 메시지 폼 */}
+          <motion.div
+            initial={{ opacity: 0, x: 28 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.55, delay: 0.25 }}
+            className="card-warm bg-white/60 p-8 backdrop-blur-sm transition-shadow duration-300 hover:shadow-md"
+          >
             <h3 className="text-coffee mb-6 font-serif text-2xl font-bold">
               메시지 보내기
             </h3>
@@ -139,7 +160,7 @@ export function Contact() {
                 <Field
                   label="회신 이메일"
                   value={form.fromEmail}
-                  placeholder="chldnjsgud0607@gmail.com"
+                  placeholder="cwh0607@naver.com"
                   inputMode="email"
                   onChange={(v) => setForm((p) => ({ ...p, fromEmail: v }))}
                 />
@@ -164,14 +185,17 @@ export function Contact() {
                 </p>
                 <button
                   type="submit"
-                  className="btn-primary flex items-center justify-center gap-2 px-4 text-sm"
+                  className="btn-primary group flex items-center justify-center gap-2 px-4 text-sm"
                 >
                   메일로 보내기
-                  <Send size={18} />
+                  <Send
+                    size={16}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
                 </button>
               </div>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
