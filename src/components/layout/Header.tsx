@@ -31,7 +31,7 @@ export function Header() {
             : 'bg-transparent py-5'
         }`}
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
           {/* 로고 */}
           <Link
             href="/"

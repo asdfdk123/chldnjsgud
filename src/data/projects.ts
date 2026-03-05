@@ -1,3 +1,9 @@
+export interface ProjectDetailSection {
+  title: string;
+  body?: string;
+  bullets?: string[];
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -17,6 +23,8 @@ export interface Project {
   };
   images?: { src: string; alt: string }[];
   color: 'sage' | 'orange' | 'blue';
+  details?: ProjectDetailSection[];
+  published?: boolean; // 기본 true로 취급(없으면 true)
 }
 
 export const projects: Project[] = [
@@ -57,7 +65,26 @@ export const projects: Project[] = [
       { src: '/projects/plantiful/plantiful6.jpg', alt: 'Plantiful 화면 6' },
       { src: '/projects/plantiful/plantiful7.jpg', alt: 'Plantiful 화면 7' },
     ],
+    details: [
+      {
+        title: '내 역할',
+        bullets: [
+          '3D UI/인터랙션 설계 및 구현(Three.js)',
+          'React Query 기반 낙관적 업데이트(Optimistic Updates) 적용',
+          '지연/실패 상황 롤백 처리로 UX 안정화',
+        ],
+      },
+      {
+        title: '핵심 기능',
+        bullets: [
+          '식물 상태 3D 시각화',
+          '물주기 등 상호작용 이벤트 처리',
+          '서버 지연 체감 최소화(선제 UI 갱신 + 실패 롤백)',
+        ],
+      },
+    ],
   },
+
   {
     id: 'used-market',
     title: 'Used Market',
@@ -99,28 +126,38 @@ export const projects: Project[] = [
       },
     ],
     color: 'orange',
+    details: [
+      {
+        title: '내 역할',
+        bullets: [
+          '프론트엔드 UI/상태관리(React Query, Zustand)',
+          'WebSocket(STOMP) 연결 전/후 메시지 처리 로직(useChat) 설계',
+          '네트워크 불안정 상황에서 전송 보장(Queue + Flush)',
+        ],
+      },
+      {
+        title: '핵심 기능',
+        bullets: [
+          '실시간 입찰/채팅(WebSocket + STOMP)',
+          '연결 지연/재연결 상황에서도 메시지 유실 방지',
+          'AI(MobileNetV2) 기반 상품 등급 판정 모델 연동',
+        ],
+      },
+    ],
   },
+
   {
-    id: 'id',
+    id: 'template',
     title: '프로젝트 제목',
     period: '기간',
     type: 'Team Project',
     summary: '요약',
     description: '설명',
     techStack: ['기술스택'],
-    troubleShooting: {
-      title: '제목',
-      problem: '문제',
-      solution: '해결',
-    },
-    links: {
-      github: '#',
-      demo: '#',
-    },
+    troubleShooting: { title: '제목', problem: '문제', solution: '해결' },
+    links: { github: '#', demo: '#' },
     color: 'sage',
-    images: [
-      { src: '', alt: '예시 사진' },
-      { src: '', alt: '예시 사진' },
-    ],
+    images: [],
+    published: false,
   },
 ];

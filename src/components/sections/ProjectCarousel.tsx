@@ -1,8 +1,9 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
+import type { KeyboardEvent, PointerEvent } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LayoutTemplate } from 'lucide-react';
 
 type Slide = { src: string; alt: string };
 type Tone = 'sage' | 'orange' | 'blue';
@@ -20,7 +21,16 @@ export function ProjectCarousel({
   const [index, setIndex] = useState(0);
   const startXRef = useRef<number | null>(null);
 
-  const max = slides.length - 1;
+  const validSlides = slides.filter(
+    (s) => typeof s?.src === 'string' && s.src.trim().length > 0
+  );
+
+  const max = validSlides.length - 1;
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (index > max) setIndex(Math.max(max, 0));
+  }, [max, index]);
+
   const canPrev = index > 0;
   const canNext = index < max;
 
@@ -32,16 +42,20 @@ export function ProjectCarousel({
         : 'bg-blue-400';
 
   const go = (next: number) => {
+    if (max < 0) return; // 슬라이드 없을 때
     if (next < 0) return setIndex(0);
     if (next > max) return setIndex(max);
     setIndex(next);
   };
 
-  const onPointerDown = (e: React.PointerEvent) => {
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture?.(e.pointerId);
     startXRef.current = e.clientX;
   };
 
-  const onPointerUp = (e: React.PointerEvent) => {
+  const onPointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.releasePointerCapture?.(e.pointerId);
+
     const startX = startXRef.current;
     startXRef.current = null;
     if (startX == null) return;
@@ -54,18 +68,34 @@ export function ProjectCarousel({
     else go(index + 1);
   };
 
-  const onPointerCancel = () => {
+  const onPointerCancel = (e: PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.releasePointerCapture?.(e.pointerId);
     startXRef.current = null;
   };
 
-  const onKeyDown = (e: React.KeyboardEvent) => {
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'ArrowLeft') go(index - 1);
     if (e.key === 'ArrowRight') go(index + 1);
   };
 
+  if (validSlides.length === 0) {
+    return (
+      <div className="relative w-full">
+        <div className="bg-muted/20 flex aspect-[16/10] w-full items-center justify-center rounded-3xl border">
+          <div className="space-y-2 text-center">
+            <LayoutTemplate
+              size={56}
+              className="text-muted-foreground/40 mx-auto"
+            />
+            <p className="text-muted-foreground text-sm">이미지 없음</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full">
-      {/* ✅ overflow-hidden 필수: 트랙 이동 시 옆 슬라이드가 비치지 않게 */}
       <div
         tabIndex={0}
         role="region"
@@ -83,7 +113,7 @@ export function ProjectCarousel({
           className="flex h-full w-full transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
-          {slides.map((s, i) => (
+          {validSlides.map((s, i) => (
             <div
               key={`${s.src}-${i}`}
               className="relative h-full w-full flex-none select-none"
@@ -101,7 +131,7 @@ export function ProjectCarousel({
           ))}
         </div>
 
-        {slides.length > 1 && (
+        {validSlides.length > 1 && (
           <>
             <button
               type="button"
@@ -130,13 +160,14 @@ export function ProjectCarousel({
         </p>
       </div>
 
-      {slides.length > 1 && (
+      {validSlides.length > 1 && (
         <div className="mt-4 flex items-center justify-center gap-2 pb-3">
-          {slides.map((_, i) => (
+          {validSlides.map((_, i) => (
             <button
               key={i}
               type="button"
               aria-label={`${i + 1}번째 이미지로 이동`}
+              aria-current={i === index ? 'true' : undefined}
               onClick={() => go(i)}
               className={`h-2.5 w-2.5 rounded-full transition-all ${
                 i === index

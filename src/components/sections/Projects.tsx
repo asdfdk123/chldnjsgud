@@ -1,12 +1,24 @@
-import { ExternalLink, Github, Zap, LayoutTemplate } from 'lucide-react';
+'use client';
+
+import { useMemo, useState } from 'react';
+import Image from 'next/image';
+import type { Project } from '@/src/data/projects';
 import { projects } from '@/src/data/projects';
-import { ProjectCarousel } from '@/src/components/sections/ProjectCarousel';
+import { ProjectDetailModal } from '@/src/components/sections/ProjectDetailModal';
 
 export function Projects() {
+  const [active, setActive] = useState<Project | null>(null);
+
+  // 카드용 썸네일(첫 번째 유효 src)
+  const thumbOf = (p: Project) =>
+    p.images?.find(
+      (s) => typeof s?.src === 'string' && s.src.trim().length > 0
+    ) ?? null;
+
   return (
     <section id="projects" className="bg-background px-6 py-24 lg:px-20">
-      <div className="mx-auto max-w-6xl space-y-20">
-        <div className="mb-16 space-y-4 text-center">
+      <div className="mx-auto max-w-6xl space-y-12">
+        <div className="space-y-4 text-center">
           <h2 className="text-coffee font-serif text-4xl md:text-5xl">
             Selected Projects
           </h2>
@@ -15,83 +27,72 @@ export function Projects() {
           </p>
         </div>
 
-        <div className="space-y-32">
-          {projects.map((project, index) => (
-            <article key={project.id} className="group">
-              <div className="grid items-start gap-12 lg:grid-cols-12">
-                {/* ✅ 이미지 컬럼: wrapper 1개만 사용 */}
-                <div
-                  className={`relative overflow-hidden rounded-3xl border transition-all duration-500 group-hover:shadow-lg lg:col-span-7 ${
-                    index % 2 === 1 ? 'lg:order-2' : 'lg:order-1'
-                  } ${
-                    project.color === 'sage'
-                      ? 'bg-sage/10 border-sage/20'
-                      : 'border-orange-100 bg-orange-50/50'
-                  }`}
-                >
-                  {project.images?.length ? (
-                    <ProjectCarousel
-                      slides={project.images}
-                      tone={project.color}
-                      priority={index === 0}
-                    />
-                  ) : (
-                    <div className="flex w-full items-center justify-center">
-                      <div className="space-y-2 text-center">
-                        <LayoutTemplate
-                          size={64}
-                          className={`mx-auto ${
-                            project.color === 'sage'
-                              ? 'text-sage/50'
-                              : 'text-orange-300'
-                          }`}
-                        />
-                        <span
-                          className={`block font-serif text-xl ${
-                            project.color === 'sage'
-                              ? 'text-sage'
-                              : 'text-orange-400'
-                          }`}
-                        ></span>
-                      </div>
-                    </div>
-                  )}
+        {/* 카드 리스트 */}
+        <div className="grid gap-6 md:grid-cols-2">
+          {projects.map((p) => {
+            const thumb = thumbOf(p);
+
+            const toneBorder =
+              p.color === 'sage'
+                ? 'border-sage/20 hover:shadow-[0_12px_40px_-20px_rgba(120,160,140,0.8)]'
+                : p.color === 'orange'
+                  ? 'border-orange-200/60 hover:shadow-[0_12px_40px_-20px_rgba(251,146,60,0.6)]'
+                  : 'border-blue-200/60 hover:shadow-[0_12px_40px_-20px_rgba(96,165,250,0.6)]';
+
+            const badgeTone =
+              p.color === 'sage'
+                ? 'bg-sage/20 text-sage-dark'
+                : p.color === 'orange'
+                  ? 'bg-orange-100 text-orange-700'
+                  : 'bg-blue-100 text-blue-700';
+
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => setActive(p)}
+                className={`card-warm group w-full text-left transition-all duration-300 hover:-translate-y-0.5 ${toneBorder}`}
+              >
+                {/* 썸네일 */}
+                <div className="relative overflow-hidden rounded-3xl">
+                  <div className="bg-muted/20 relative aspect-[16/10] w-full">
+                    {thumb ? (
+                      <Image
+                        src={thumb.src}
+                        alt={thumb.alt}
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                        priority={p.id === 'plantiful'}
+                      />
+                    ) : null}
+                  </div>
                 </div>
 
-                <div
-                  className={`space-y-8 lg:col-span-5 ${
-                    index % 2 === 1 ? 'lg:order-1' : 'lg:order-2'
-                  }`}
-                >
-                  <div>
-                    <div className="mb-3 flex items-center gap-3">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-bold tracking-wider uppercase ${
-                          project.color === 'sage'
-                            ? 'bg-sage/20 text-sage-dark'
-                            : 'bg-orange-100 text-orange-700'
-                        }`}
-                      >
-                        {project.type}
-                      </span>
-                      <span className="text-muted-foreground text-sm">
-                        {project.period}
-                      </span>
-                    </div>
-
-                    <h3 className="text-coffee mb-2 font-serif text-3xl font-bold">
-                      {project.title}
-                    </h3>
-                    <p className="text-foreground mb-4 text-lg font-medium">
-                      {project.summary}
-                    </p>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {project.description}
-                    </p>
+                {/* 본문(요약만) */}
+                <div className="space-y-3 p-6">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-bold tracking-wider uppercase ${badgeTone}`}
+                    >
+                      {p.type}
+                    </span>
+                    <span className="text-muted-foreground text-sm">
+                      {p.period}
+                    </span>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
-                    {project.techStack.map((tech) => (
+                  <h3 className="text-coffee font-serif text-2xl font-bold underline-offset-4 group-hover:underline">
+                    {p.title}
+                  </h3>
+
+                  <p className="text-muted-foreground leading-relaxed">
+                    {p.summary}
+                  </p>
+
+                  {/* 카드에선 tech 일부만 */}
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {p.techStack.slice(0, 5).map((tech) => (
                       <span
                         key={tech}
                         className="bg-secondary text-secondary-foreground rounded-md px-3 py-1 text-xs font-medium"
@@ -99,68 +100,28 @@ export function Projects() {
                         {tech}
                       </span>
                     ))}
+                    {p.techStack.length > 5 && (
+                      <span className="text-muted-foreground px-2 py-1 text-xs">
+                        +{p.techStack.length - 5}
+                      </span>
+                    )}
                   </div>
 
-                  <div
-                    className={`bg-cream rounded-2xl border p-6 shadow-sm ${
-                      project.color === 'sage'
-                        ? 'border-sage/20'
-                        : 'border-orange-200/50'
-                    }`}
-                  >
-                    <h4
-                      className={`mb-4 flex items-center gap-2 border-b pb-2 font-bold ${
-                        project.color === 'sage'
-                          ? 'text-sage-dark border-sage/10'
-                          : 'border-orange-200/50 text-orange-700'
-                      }`}
-                    >
-                      <Zap size={18} /> {project.troubleShooting.title}
-                    </h4>
-                    <div className="space-y-4 text-sm">
-                      <div>
-                        <span className="text-coffee mb-1 block font-bold">
-                          [문제]
-                        </span>
-                        <p className="text-muted-foreground leading-snug">
-                          {project.troubleShooting.problem}
-                        </p>
-                      </div>
-                      <div>
-                        <span className="text-coffee mb-1 block font-bold">
-                          [해결]
-                        </span>
-                        <p className="text-muted-foreground leading-snug">
-                          {project.troubleShooting.solution}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4 pt-2">
-                    {project.links.github && (
-                      <a
-                        href={project.links.github}
-                        className="btn-outline flex items-center gap-2 px-5 py-2 text-sm"
-                      >
-                        <Github size={16} /> GitHub
-                      </a>
-                    )}
-                    {project.links.demo && (
-                      <a
-                        href={project.links.demo}
-                        className="btn-outline flex items-center gap-2 px-5 py-2 text-sm"
-                      >
-                        <ExternalLink size={16} /> Demo
-                      </a>
-                    )}
+                  <div className="pt-1 text-sm font-medium">
+                    <span className="text-coffee">자세히 보기 →</span>
                   </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </button>
+            );
+          })}
         </div>
       </div>
+
+      <ProjectDetailModal
+        open={!!active}
+        project={active}
+        onClose={() => setActive(null)}
+      />
     </section>
   );
 }
