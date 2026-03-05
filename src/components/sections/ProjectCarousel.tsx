@@ -5,7 +5,7 @@ import type { KeyboardEvent, PointerEvent } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, LayoutTemplate } from 'lucide-react';
 
-type Slide = { src: string; alt: string };
+type Slide = { src: string; alt: string; type?: 'image' | 'video' };
 type Tone = 'sage' | 'orange' | 'blue';
 
 export function ProjectCarousel({
@@ -116,17 +116,28 @@ export function ProjectCarousel({
           {validSlides.map((s, i) => (
             <div
               key={`${s.src}-${i}`}
-              className="relative h-full w-full flex-none select-none"
+              className="bg-muted/30 relative h-full w-full flex-none select-none"
             >
-              <Image
-                src={s.src}
-                alt={s.alt}
-                fill
-                className="object-contain"
-                priority={priority && i === 0}
-                sizes="(min-width: 1024px) 60vw, 100vw"
-                draggable={false}
-              />
+              {s.type === 'video' ? (
+                <video
+                  src={s.src}
+                  title={s.alt}
+                  controls
+                  playsInline
+                  className="h-full w-full bg-black object-contain"
+                  onPointerDown={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <Image
+                  src={s.src}
+                  alt={s.alt}
+                  fill
+                  className="object-contain"
+                  priority={priority && i === 0}
+                  sizes="(min-width: 1024px) 60vw, 100vw"
+                  draggable={false}
+                />
+              )}
             </div>
           ))}
         </div>
@@ -139,6 +150,7 @@ export function ProjectCarousel({
               disabled={!canPrev}
               aria-label="이전 이미지"
               className="bg-background/80 border-border/40 absolute top-1/2 left-4 -translate-y-1/2 rounded-full border p-2 shadow-sm backdrop-blur disabled:opacity-40"
+              onPointerDown={(e) => e.stopPropagation()}
             >
               <ChevronLeft size={20} />
             </button>
@@ -149,6 +161,7 @@ export function ProjectCarousel({
               disabled={!canNext}
               aria-label="다음 이미지"
               className="bg-background/80 border-border/40 absolute top-1/2 right-4 -translate-y-1/2 rounded-full border p-2 shadow-sm backdrop-blur disabled:opacity-40"
+              onPointerDown={(e) => e.stopPropagation()}
             >
               <ChevronRight size={20} />
             </button>

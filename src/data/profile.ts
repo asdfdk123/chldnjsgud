@@ -1,7 +1,7 @@
 export const socialLinks = {
   github: 'https://github.com/asdfdk123',
   blog: 'https://velog.io/@dnjsgud',
-  email: 'mailto:chldnjsgud@gmail.com',
+  email: 'mailto:cwh0607@naver.com',
 };
 
 export const techStack = [
@@ -35,6 +35,7 @@ export const history: HistoryItem[] = [
     description: [
       'Lighthouse 기반 웹 성능 최적화 방법론 학습',
       'Git Flow 협업 및 코드 리뷰 문화 체득',
+      '최종 협업 프로젝트에서 팀 최우수상 수상',
     ],
     color: 'sage',
   },

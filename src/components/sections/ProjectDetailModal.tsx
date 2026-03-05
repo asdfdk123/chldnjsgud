@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import type { Project } from '@/src/data/projects';
 import { ProjectCarousel } from '@/src/components/sections/ProjectCarousel';
-import { ExternalLink, Github, X, Zap, LayoutTemplate } from 'lucide-react';
+import { ExternalLink, Github, X, Zap, LayoutTemplate, Code2, Lightbulb, TrendingUp } from 'lucide-react';
 
 export function ProjectDetailModal({
   open,
@@ -56,8 +56,8 @@ export function ProjectDetailModal({
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
-      <div className="bg-background relative mx-4 w-full max-w-5xl overflow-hidden rounded-3xl border shadow-xl">
-        <div className="flex items-start justify-between gap-4 border-b p-6">
+      <div className="bg-background relative mx-4 flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border shadow-xl">
+        <div className="flex flex-shrink-0 items-start justify-between gap-4 border-b p-6">
           <div className="min-w-0">
             <div className="mb-2 flex flex-wrap items-center gap-2">
               <span
@@ -92,7 +92,7 @@ export function ProjectDetailModal({
           </button>
         </div>
 
-        <div className="max-h-[80vh] overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6">
           <div className="grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-7">
               {project.images?.length ? (
@@ -140,29 +140,89 @@ export function ProjectDetailModal({
                 </div>
               </div>
 
-              <div className="bg-cream rounded-2xl border p-5 shadow-sm">
-                <h4 className="text-coffee mb-3 flex items-center gap-2 border-b pb-2 font-bold">
-                  <Zap size={18} /> {project.troubleShooting.title}
-                </h4>
-                <div className="space-y-4 text-sm">
-                  <div>
-                    <span className="text-coffee mb-1 block font-bold">
-                      [문제]
-                    </span>
-                    <p className="text-muted-foreground leading-snug">
-                      {project.troubleShooting.problem}
-                    </p>
+              {project.star ? (
+                <div className="space-y-3">
+                  {/* 담당 기능 */}
+                  <div className="bg-cream rounded-2xl border p-4 shadow-sm">
+                    <h4 className="text-coffee mb-2 flex items-center gap-2 text-sm font-bold">
+                      <Code2 size={15} className="text-blue-500" />
+                      담당 기능
+                    </h4>
+                    <ul className="space-y-1">
+                      {project.star.role.map((item, i) => (
+                        <li key={i} className="text-muted-foreground flex gap-2 text-xs leading-relaxed">
+                          <span className="mt-1.5 h-1 w-1 flex-none rounded-full bg-current opacity-40" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <div>
-                    <span className="text-coffee mb-1 block font-bold">
-                      [해결]
-                    </span>
-                    <p className="text-muted-foreground leading-snug">
-                      {project.troubleShooting.solution}
-                    </p>
+
+                  {/* 기술적 도전 & 해결 */}
+                  <div className="bg-cream rounded-2xl border p-4 shadow-sm">
+                    <h4 className="text-coffee mb-3 flex items-center gap-2 text-sm font-bold">
+                      <Lightbulb size={15} className="text-orange-500" />
+                      기술적 도전 & 해결
+                    </h4>
+                    <div className="space-y-3">
+                      <div>
+                        <span className="text-muted-foreground mb-1 block text-xs font-semibold tracking-wide uppercase">도전</span>
+                        <ul className="space-y-1">
+                          {project.star.challenge.map((item, i) => (
+                            <li key={i} className="text-muted-foreground flex gap-2 text-xs leading-relaxed">
+                              <span className="mt-1.5 h-1 w-1 flex-none rounded-full bg-orange-400 opacity-60" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="border-t pt-3">
+                        <span className="text-muted-foreground mb-1 block text-xs font-semibold tracking-wide uppercase">해결</span>
+                        <ul className="space-y-1">
+                          {project.star.solution.map((item, i) => (
+                            <li key={i} className="text-muted-foreground flex gap-2 text-xs leading-relaxed">
+                              <span className="mt-1.5 h-1 w-1 flex-none rounded-full bg-sage opacity-60" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 성과 & 배운 점 */}
+                  <div className="bg-cream rounded-2xl border p-4 shadow-sm">
+                    <h4 className="text-coffee mb-2 flex items-center gap-2 text-sm font-bold">
+                      <TrendingUp size={15} className="text-coffee" />
+                      성과 & 배운 점
+                    </h4>
+                    <ul className="space-y-1">
+                      {project.star.learning.map((item, i) => (
+                        <li key={i} className="text-muted-foreground flex gap-2 text-xs leading-relaxed">
+                          <span className="mt-1.5 h-1 w-1 flex-none rounded-full bg-current opacity-40" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="bg-cream rounded-2xl border p-5 shadow-sm">
+                  <h4 className="text-coffee mb-3 flex items-center gap-2 border-b pb-2 font-bold">
+                    <Zap size={18} /> {project.troubleShooting.title}
+                  </h4>
+                  <div className="space-y-4 text-sm">
+                    <div>
+                      <span className="text-coffee mb-1 block font-bold">[문제]</span>
+                      <p className="text-muted-foreground leading-snug">{project.troubleShooting.problem}</p>
+                    </div>
+                    <div>
+                      <span className="text-coffee mb-1 block font-bold">[해결]</span>
+                      <p className="text-muted-foreground leading-snug">{project.troubleShooting.solution}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="flex flex-wrap gap-3 pt-2">
                 {project.links.github && (
@@ -186,7 +246,7 @@ export function ProjectDetailModal({
           </div>
         </div>
 
-        <div className="border-t p-4 text-right">
+        <div className="flex-shrink-0 border-t p-4 text-right">
           <button
             type="button"
             onClick={onClose}
