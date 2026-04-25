@@ -6,9 +6,9 @@ export function Footer() {
     <footer className="bg-coffee text-cream border-t border-white/10 px-6 py-12 lg:px-20">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row">
         <div className="space-y-2 text-center md:text-left">
-          <h2 className="font-serif text-2xl font-bold">
-            chldnjsgud.<span className="text-sage">Dev</span>
-          </h2>
+          <p className="font-serif text-2xl font-bold">
+            최원형.<span className="text-sage">dev</span>
+          </p>
           <p className="text-sm text-white/60">
             © 2026 Choi Wonhyoung. All rights reserved.
           </p>
