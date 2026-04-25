@@ -1,4 +1,5 @@
 import { Github, Mail, BookOpen } from 'lucide-react';
+import { socialLinks } from '@/src/data/profile';
 
 export function Footer() {
   return (
@@ -15,20 +16,28 @@ export function Footer() {
 
         <div className="flex gap-6">
           <a
-            href="https://github.com/asdfdk123"
+            href={socialLinks.github}
             target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub 프로필 보기"
             className="hover:text-sage p-2"
           >
             <Github size={20} />
           </a>
           <a
-            href="https://velog.io/@dnjsgud"
+            href={socialLinks.blog}
             target="_blank"
+            rel="noopener noreferrer"
+            aria-label="기술 블로그 보기"
             className="hover:text-sage p-2"
           >
             <BookOpen size={20} />
           </a>
-          <a href="mailto:chldnjsgud@gmail.com" className="hover:text-sage p-2">
+          <a
+            href={socialLinks.email}
+            aria-label="이메일 보내기"
+            className="hover:text-sage p-2"
+          >
             <Mail size={20} />
           </a>
         </div>

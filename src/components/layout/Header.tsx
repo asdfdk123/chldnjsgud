@@ -1,18 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Mail, BookOpen, Menu, X } from 'lucide-react';
+import { socialLinks } from '@/src/data/profile';
 
 const navLinks = [
-  { name: 'About',    href: '#about' },
+  { name: 'About', href: '#about' },
   { name: 'Projects', href: '#projects' },
-  { name: 'Contact',  href: '#contact' },
+  { name: 'Contact', href: '#contact' },
 ];
 
 export function Header() {
-  const [isScrolled, setIsScrolled]       = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setMobileMenu] = useState(false);
   const [activeSection, setActiveSection] = useState('');
 
@@ -24,18 +25,26 @@ export function Header() {
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
+
     navLinks.forEach(({ href }) => {
       const id = href.replace('#', '');
-      const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
+      const element = document.getElementById(id);
+      if (!element) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveSection(id);
+          }
+        },
         { threshold: 0.35 }
       );
-      obs.observe(el);
-      observers.push(obs);
+
+      observer.observe(element);
+      observers.push(observer);
     });
-    return () => observers.forEach((o) => o.disconnect());
+
+    return () => observers.forEach((observer) => observer.disconnect());
   }, []);
 
   return (
@@ -48,31 +57,37 @@ export function Header() {
         }`}
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
-          {/* 로고 */}
           <Link
             href="/"
             className="text-coffee relative z-50 font-serif text-xl font-bold tracking-tight transition-opacity hover:opacity-80"
             onClick={() => setMobileMenu(false)}
+            aria-label="홈으로 이동"
           >
             Chldnjsgud.<span className="text-sage">Dev</span>
           </Link>
 
-          {/* 데스크탑 네비게이션 */}
-          <nav className="hidden items-center gap-8 md:flex">
+          <nav className="hidden items-center gap-8 md:flex" aria-label="주요 메뉴">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.replace('#', '');
+
               return (
                 <Link
                   key={link.name}
                   href={link.href}
                   className="relative text-sm font-medium transition-colors duration-200"
                 >
-                  <span className={isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}>
+                  <span
+                    className={
+                      isActive
+                        ? 'text-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }
+                  >
                     {link.name}
                   </span>
                   <span
                     className={`bg-sage absolute -bottom-1 left-0 right-0 h-0.5 origin-left rounded-full transition-all duration-300 ${
-                      isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+                      isActive ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'
                     }`}
                   />
                 </Link>
@@ -80,18 +95,24 @@ export function Header() {
             })}
           </nav>
 
-          {/* 데스크탑 소셜 아이콘 */}
           <div className="hidden items-center gap-4 md:flex">
-            <SocialIcon href="https://github.com/asdfdk123" label="GitHub"><Github size={19} /></SocialIcon>
-            <SocialIcon href="https://velog.io/@dnjsgud"    label="Blog"><BookOpen size={19} /></SocialIcon>
-            <SocialIcon href="mailto:chldnjsgud@gmail.com"  label="Email"><Mail size={19} /></SocialIcon>
+            <SocialIcon href={socialLinks.github} label="GitHub">
+              <Github size={19} />
+            </SocialIcon>
+            <SocialIcon href={socialLinks.blog} label="Blog">
+              <BookOpen size={19} />
+            </SocialIcon>
+            <SocialIcon href={socialLinks.email} label="Email" external={false}>
+              <Mail size={19} />
+            </SocialIcon>
           </div>
 
-          {/* 모바일 햄버거 */}
           <button
             className="text-foreground relative z-50 p-2 md:hidden"
             onClick={() => setMobileMenu(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={isMobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
@@ -109,10 +130,10 @@ export function Header() {
         </div>
       </header>
 
-      {/* 모바일 메뉴 */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
+            id="mobile-navigation"
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
@@ -120,12 +141,12 @@ export function Header() {
             className="bg-background/95 fixed inset-0 z-40 backdrop-blur-sm md:hidden"
           >
             <div className="flex h-full flex-col items-center justify-center space-y-8">
-              {navLinks.map((link, i) => (
+              {navLinks.map((link, index) => (
                 <motion.div
                   key={link.name}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.07 }}
+                  transition={{ delay: index * 0.07 }}
                 >
                   <Link
                     href={link.href}
@@ -143,9 +164,15 @@ export function Header() {
                 transition={{ delay: 0.25 }}
                 className="mt-8 flex gap-6"
               >
-                <SocialIcon href="https://github.com/asdfdk123" label="GitHub"><Github size={24} /></SocialIcon>
-                <SocialIcon href="https://velog.io/@dnjsgud"    label="Blog"><BookOpen size={24} /></SocialIcon>
-                <SocialIcon href="mailto:chldnjsgud@gmail.com"  label="Email"><Mail size={24} /></SocialIcon>
+                <SocialIcon href={socialLinks.github} label="GitHub">
+                  <Github size={24} />
+                </SocialIcon>
+                <SocialIcon href={socialLinks.blog} label="Blog">
+                  <BookOpen size={24} />
+                </SocialIcon>
+                <SocialIcon href={socialLinks.email} label="Email" external={false}>
+                  <Mail size={24} />
+                </SocialIcon>
               </motion.div>
             </div>
           </motion.div>
@@ -155,12 +182,22 @@ export function Header() {
   );
 }
 
-function SocialIcon({ href, label, children }: { href: string; label: string; children: React.ReactNode }) {
+function SocialIcon({
+  href,
+  label,
+  children,
+  external = true,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+  external?: boolean;
+}) {
   return (
     <a
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
       aria-label={label}
       className="text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-110"
     >

@@ -3,7 +3,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { BookOpen, Check, Copy, Github, Mail, Send } from 'lucide-react';
-
 import { socialLinks } from '@/src/data/profile';
 
 type FormState = {
@@ -36,7 +35,9 @@ export function Contact() {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1200);
     } catch {
-      setError('복사에 실패했습니다. 이메일을 직접 선택해서 복사해주세요.');
+      setError(
+        '복사에 실패했습니다. 이메일 주소를 직접 선택해서 복사해 주세요.'
+      );
     }
   };
 
@@ -53,7 +54,7 @@ export function Contact() {
       return;
     }
     if (!name || !fromEmail || !message) {
-      setError('이름, 이메일, 메시지를 모두 입력해주세요.');
+      setError('이름, 이메일, 메시지를 모두 입력해 주세요.');
       return;
     }
 
@@ -70,7 +71,7 @@ export function Contact() {
       <div ref={sectionRef} className="mx-auto w-full max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          animate={isInView ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 0.6 }}
           className="mb-14 space-y-4 text-center"
         >
@@ -78,15 +79,14 @@ export function Contact() {
             Contact
           </h2>
           <p className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
-            어떤 연락이든 모두 환영합니다.
+            포트폴리오에 대한 질문이나 협업 제안이 있다면 편하게 연락해 주세요.
           </p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
-          {/* 왼쪽: 빠른 연락 */}
           <motion.div
             initial={{ opacity: 0, x: -28 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            animate={isInView ? { opacity: 1, x: 0 } : undefined}
             transition={{ duration: 0.55, delay: 0.15 }}
             className="space-y-6"
           >
@@ -105,6 +105,7 @@ export function Contact() {
                   type="button"
                   className="btn-outline flex items-center gap-2 px-4 py-2 text-sm"
                   onClick={onCopy}
+                  aria-label="이메일 주소 복사"
                 >
                   {copied ? <Check size={16} /> : <Copy size={16} />}
                   {copied ? '복사됨' : '복사'}
@@ -122,6 +123,7 @@ export function Contact() {
                   href={socialLinks.github}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="GitHub 프로필 보기"
                   className="btn-outline flex items-center justify-center gap-2 px-5 py-2 text-sm"
                 >
                   <Github size={16} /> GitHub
@@ -130,6 +132,7 @@ export function Contact() {
                   href={socialLinks.blog}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="기술 블로그 보기"
                   className="btn-outline flex items-center justify-center gap-2 px-5 py-2 text-sm"
                 >
                   <BookOpen size={16} /> Blog
@@ -138,10 +141,9 @@ export function Contact() {
             </div>
           </motion.div>
 
-          {/* 오른쪽: 메시지 폼 */}
           <motion.div
             initial={{ opacity: 0, x: 28 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            animate={isInView ? { opacity: 1, x: 0 } : undefined}
             transition={{ duration: 0.55, delay: 0.25 }}
             className="card-warm bg-white/60 p-8 backdrop-blur-sm transition-shadow duration-300 hover:shadow-md"
           >
@@ -152,29 +154,37 @@ export function Contact() {
             <form className="space-y-5" onSubmit={onSubmit}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field
+                  id="contact-name"
                   label="이름"
                   value={form.name}
                   placeholder="최원형"
-                  onChange={(v) => setForm((p) => ({ ...p, name: v }))}
+                  onChange={(v) => setForm((prev) => ({ ...prev, name: v }))}
                 />
                 <Field
+                  id="contact-email"
                   label="회신 이메일"
                   value={form.fromEmail}
-                  placeholder="cwh0607@naver.com"
+                  placeholder="you@example.com"
                   inputMode="email"
-                  onChange={(v) => setForm((p) => ({ ...p, fromEmail: v }))}
+                  onChange={(v) =>
+                    setForm((prev) => ({ ...prev, fromEmail: v }))
+                  }
                 />
               </div>
 
               <div>
-                <label className="text-coffee mb-2 block text-sm font-medium">
+                <label
+                  htmlFor="contact-message"
+                  className="text-coffee mb-2 block text-sm font-medium"
+                >
                   메시지
                 </label>
                 <textarea
+                  id="contact-message"
                   className="border-input bg-background/60 focus:border-sage focus:ring-sage/30 min-h-[180px] w-full resize-y rounded-2xl border px-4 py-3 text-sm outline-none focus:ring-4"
                   value={form.message}
                   onChange={(e) =>
-                    setForm((p) => ({ ...p, message: e.target.value }))
+                    setForm((prev) => ({ ...prev, message: e.target.value }))
                   }
                 />
               </div>
@@ -203,24 +213,27 @@ export function Contact() {
 }
 
 function Field({
+  id,
   label,
   value,
   onChange,
   placeholder,
   inputMode,
 }: {
+  id: string;
   label: string;
   value: string;
-  onChange: (v: string) => void;
+  onChange: (value: string) => void;
   placeholder?: string;
   inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
 }) {
   return (
     <div>
-      <label className="text-coffee mb-2 block text-sm font-medium">
+      <label htmlFor={id} className="text-coffee mb-2 block text-sm font-medium">
         {label}
       </label>
       <input
+        id={id}
         className="border-input bg-background/60 focus:border-sage focus:ring-sage/30 w-full rounded-2xl border px-4 py-3 text-sm outline-none focus:ring-4"
         value={value}
         onChange={(e) => onChange(e.target.value)}
