@@ -136,7 +136,7 @@ export const history: HistoryItem[] = [
   },
   {
     id: 'university',
-    title: '신경대학교',
+    title: '한경대학교',
     subtitle: '소프트웨어융합학과',
     period: '2020.03 - 2026.02',
     descriptionText:

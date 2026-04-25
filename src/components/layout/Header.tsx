@@ -61,9 +61,9 @@ export function Header() {
             href="/"
             className="text-coffee relative z-50 font-serif text-xl font-bold tracking-tight transition-opacity hover:opacity-80"
             onClick={() => setMobileMenu(false)}
-            aria-label="홈으로 이동"
+            aria-label="최원형 포트폴리오 홈으로 이동"
           >
-            Chldnjsgud.<span className="text-sage">Dev</span>
+            최원형.<span className="text-sage">dev</span>
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex" aria-label="주요 메뉴">

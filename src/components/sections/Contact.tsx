@@ -148,7 +148,7 @@ export function Contact() {
             className="card-warm bg-white/60 p-8 backdrop-blur-sm transition-shadow duration-300 hover:shadow-md"
           >
             <h3 className="text-coffee mb-6 font-serif text-2xl font-bold">
-              메시지 보내기
+              메일 앱으로 작성하기
             </h3>
 
             <form className="space-y-5" onSubmit={onSubmit}>
@@ -190,14 +190,17 @@ export function Contact() {
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-muted-foreground text-xs">
-                  제출 시 기본 메일 앱이 열리고 내용이 자동으로 채워집니다.
-                </p>
+                <div className="bg-secondary/70 rounded-2xl px-4 py-3 sm:max-w-xs">
+                  <p className="text-foreground text-xs leading-5 font-medium">
+                    입력한 내용은 바로 전송되지 않고, 기본 메일 앱에 자동으로
+                    채워집니다.
+                  </p>
+                </div>
                 <button
                   type="submit"
                   className="btn-primary group flex items-center justify-center gap-2 px-4 text-sm"
                 >
-                  메일로 보내기
+                  기본 메일 앱 열기
                   <Send
                     size={16}
                     className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
