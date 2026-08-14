@@ -1,16 +1,18 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import {
   ChevronDown,
   ExternalLink,
   Github,
+  Images,
   Lightbulb,
   UserRound,
   Wrench,
 } from 'lucide-react';
+import { ProjectMediaModal } from '@/src/components/projects/ProjectMediaModal';
 import type { Project } from '@/src/data/projects';
 import { projects } from '@/src/data/projects';
 
@@ -26,6 +28,7 @@ const toneOf = (color: Project['color']) => {
       link: 'text-sage-dark hover:text-sage',
     } as const;
   }
+
   if (color === 'orange') {
     return {
       badge: 'bg-orange-100 text-orange-700',
@@ -37,6 +40,7 @@ const toneOf = (color: Project['color']) => {
       link: 'text-orange-700 hover:text-orange-500',
     } as const;
   }
+
   return {
     badge: 'bg-blue-100 text-blue-700',
     accent: 'bg-blue-400/80',
@@ -93,8 +97,13 @@ const detailSections = (project: Project) => {
 
 export function Projects() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [mediaProject, setMediaProject] = useState<Project | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
+
+  const closeMediaModal = useCallback(() => {
+    setMediaProject(null);
+  }, []);
 
   const publishedProjects = useMemo(
     () => projects.filter((project) => project.published !== false),
@@ -113,14 +122,16 @@ export function Projects() {
           <p className="text-muted-foreground text-sm tracking-[0.18em] uppercase">
             Selected Projects
           </p>
+
           <div className="space-y-3">
             <h2 className="text-coffee font-serif text-4xl md:text-5xl">
               문제를 맡고, 해결 과정을 설명할 수 있는 프로젝트
             </h2>
+
             <p className="text-muted-foreground max-w-3xl text-base leading-7 md:text-lg">
-              프로젝트 카드에서 맡은 역할, 해결한 문제, 기술 판단이 먼저 보이도록
-              정보를 다시 정리했습니다. 상세 내용은 카드 안에서 바로 펼쳐 확인할 수
-              있습니다.
+              프로젝트 카드에서 맡은 역할, 해결한 문제, 기술 판단이 먼저
+              보이도록 정보를 다시 정리했습니다. 상세 내용은 카드 안에서 바로
+              펼쳐 확인할 수 있습니다.
             </p>
           </div>
         </motion.div>
@@ -129,6 +140,7 @@ export function Projects() {
           {publishedProjects.map((project, index) => {
             const tone = toneOf(project.color);
             const thumb = thumbOf(project);
+            const hasMedia = Boolean(project.images?.length);
             const isExpanded = expandedId === project.id;
             const roles = project.star?.role.slice(0, 3) ?? [];
             const techs = project.techStack.slice(0, 5);
@@ -153,20 +165,26 @@ export function Projects() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0 space-y-3">
                       <div className="flex flex-wrap items-center gap-2 text-xs font-semibold tracking-wide uppercase">
-                        <span className={`rounded-full px-3 py-1 ${tone.badge}`}>
+                        <span
+                          className={`rounded-full px-3 py-1 ${tone.badge}`}
+                        >
                           {project.type}
                         </span>
+
                         <span className="text-muted-foreground">
                           {project.period}
                         </span>
                       </div>
+
                       <div className="space-y-2">
                         <h3 className="text-coffee font-serif text-2xl leading-tight font-bold sm:text-3xl">
                           {project.title}
                         </h3>
+
                         <p className="text-foreground text-sm leading-6 sm:text-base">
                           {project.summary}
                         </p>
+
                         <p className="text-muted-foreground text-sm leading-6">
                           {project.myRole}
                         </p>
@@ -204,11 +222,16 @@ export function Projects() {
                         aria-label={`${project.title} 내 역할`}
                       >
                         <div className="mb-3 flex items-center gap-2">
-                          <UserRound size={15} className="text-muted-foreground" />
+                          <UserRound
+                            size={15}
+                            className="text-muted-foreground"
+                          />
+
                           <h4 className="text-coffee text-sm font-semibold">
                             내 역할
                           </h4>
                         </div>
+
                         <ul className="space-y-2">
                           {roles.map((role, roleIndex) => (
                             <li
@@ -227,18 +250,24 @@ export function Projects() {
 
                     {keyIssue && (
                       <section
-                        className="rounded-2xl border border-border/60 bg-background p-4"
+                        className="border-border/60 bg-background rounded-2xl border p-4"
                         aria-label={`${project.title} 핵심 문제 해결`}
                       >
                         <div className="mb-3 flex items-center gap-2">
-                          <Lightbulb size={15} className="text-muted-foreground" />
+                          <Lightbulb
+                            size={15}
+                            className="text-muted-foreground"
+                          />
+
                           <h4 className="text-coffee text-sm font-semibold">
                             핵심 문제 해결
                           </h4>
                         </div>
+
                         <p className="text-muted-foreground text-sm leading-6">
                           {keyIssue}
                         </p>
+
                         <p className="text-foreground mt-2 text-sm leading-6">
                           {project.troubleShooting.solution}
                         </p>
@@ -249,6 +278,7 @@ export function Projects() {
                       <h4 className="text-coffee mb-3 text-sm font-semibold">
                         주요 기술 스택
                       </h4>
+
                       <div className="flex flex-wrap gap-2">
                         {techs.map((tech) => (
                           <span
@@ -258,6 +288,7 @@ export function Projects() {
                             {tech}
                           </span>
                         ))}
+
                         {project.techStack.length > techs.length && (
                           <span className="text-muted-foreground px-2 py-1 text-xs">
                             +{project.techStack.length - techs.length}
@@ -267,8 +298,21 @@ export function Projects() {
                     </section>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/70 pt-4">
+                  <div className="border-border/70 flex flex-wrap items-center justify-between gap-3 border-t pt-4">
                     <div className="flex flex-wrap items-center gap-3">
+                      {hasMedia && (
+                        <button
+                          type="button"
+                          onClick={() => setMediaProject(project)}
+                          aria-label={`${project.title} 사진과 영상 보기`}
+                          aria-haspopup="dialog"
+                          className={`inline-flex cursor-pointer items-center gap-2 text-sm font-medium transition-colors ${tone.link}`}
+                        >
+                          <Images size={15} />
+                          사진·영상 보기
+                        </button>
+                      )}
+
                       {project.links.github && (
                         <a
                           href={project.links.github}
@@ -281,6 +325,7 @@ export function Projects() {
                           GitHub
                         </a>
                       )}
+
                       {project.links.demo && (
                         <a
                           href={project.links.demo}
@@ -299,7 +344,9 @@ export function Projects() {
                       type="button"
                       aria-expanded={isExpanded}
                       aria-controls={detailsId}
-                      aria-label={`${project.title} 상세 정보 ${isExpanded ? '접기' : '펼치기'}`}
+                      aria-label={`${project.title} 상세 정보 ${
+                        isExpanded ? '접기' : '펼치기'
+                      }`}
                       onClick={() =>
                         setExpandedId((current) =>
                           current === project.id ? null : project.id
@@ -336,19 +383,24 @@ export function Projects() {
                   {isExpanded && (
                     <div
                       id={detailsId}
-                      className="space-y-4 border-t border-border/70 pt-5"
+                      className="border-border/70 space-y-4 border-t pt-5"
                     >
                       {sections.map((section) => (
                         <section
                           key={`${project.id}-${section.key}`}
-                          className="rounded-2xl border border-border/60 bg-background p-4"
+                          className="border-border/60 bg-background rounded-2xl border p-4"
                         >
                           <div className="mb-3 flex items-center gap-2">
-                            <Wrench size={15} className="text-muted-foreground" />
+                            <Wrench
+                              size={15}
+                              className="text-muted-foreground"
+                            />
+
                             <h4 className="text-coffee text-sm font-semibold">
                               {section.title}
                             </h4>
                           </div>
+
                           <ul className="space-y-2">
                             {section.items.map((item, itemIndex) => (
                               <li
@@ -372,6 +424,14 @@ export function Projects() {
           })}
         </div>
       </div>
+
+      {mediaProject?.images && mediaProject.images.length > 0 && (
+        <ProjectMediaModal
+          projectTitle={mediaProject.title}
+          media={mediaProject.images}
+          onClose={closeMediaModal}
+        />
+      )}
     </section>
   );
 }

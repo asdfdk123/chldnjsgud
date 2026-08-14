@@ -109,9 +109,7 @@ const createProjectDetails = ({
     bullets: [
       `문제: ${troubleShooting.problem}`,
       `해결: ${troubleShooting.solution}`,
-      ...(troubleShooting.impact
-        ? [`결과: ${troubleShooting.impact}`]
-        : []),
+      ...(troubleShooting.impact ? [`결과: ${troubleShooting.impact}`] : []),
     ],
   },
   {
@@ -291,11 +289,13 @@ export const projects: Project[] = [
     techHighlights: [
       {
         name: 'Kakao Map API',
-        usage: '공원 위치와 사용자 인터랙션이 중심이 되는 지도 화면을 구현했습니다.',
+        usage:
+          '공원 위치와 사용자 인터랙션이 중심이 되는 지도 화면을 구현했습니다.',
       },
       {
         name: 'TanStack Query',
-        usage: '공원 정보 조회 흐름에 맞춰 화면 상태와 비동기 데이터를 관리했습니다.',
+        usage:
+          '공원 정보 조회 흐름에 맞춰 화면 상태와 비동기 데이터를 관리했습니다.',
       },
       {
         name: 'Zustand',
@@ -349,7 +349,8 @@ export const projects: Project[] = [
     techHighlights: [
       {
         name: 'React Query v5',
-        usage: '게시글 등록 직후 리스트가 갱신되는 낙관적 업데이트 흐름을 구현했습니다.',
+        usage:
+          '게시글 등록 직후 리스트가 갱신되는 낙관적 업데이트 흐름을 구현했습니다.',
       },
       {
         name: 'React Hook Form',
@@ -371,19 +372,19 @@ export const projects: Project[] = [
     images: [
       {
         src: '/projects/mind-safe/mind-safe1.jpg',
-        alt: 'Mind-Safe 게시글 목록 화면',
+        alt: 'Mind-Safe 로그인 화면',
       },
       {
         src: '/projects/mind-safe/mind-safe2.jpg',
-        alt: 'Mind-Safe 게시글 작성 모달',
+        alt: 'Mind-Safe 메인 화면',
       },
       {
         src: '/projects/mind-safe/mind-safe3.jpg',
-        alt: 'Mind-Safe 게시글 상세 화면',
+        alt: 'Mind-Safe 게시글 작성 모달',
       },
       {
         src: '/projects/mind-safe/mind-safe4.jpg',
-        alt: 'Mind-Safe 태그 기반 작성 흐름',
+        alt: 'Mind-Safe 마이페이지',
       },
     ],
     star: mindSafeStar,
@@ -415,15 +416,18 @@ export const projects: Project[] = [
     techHighlights: [
       {
         name: 'React Query',
-        usage: '식물 정보 수정 이후 상세 정보가 즉시 반영되도록 조회와 갱신 흐름을 연결했습니다.',
+        usage:
+          '식물 정보 수정 이후 상세 정보가 즉시 반영되도록 조회와 갱신 흐름을 연결했습니다.',
       },
       {
         name: 'Supabase',
-        usage: '식물 데이터 조회와 수정 흐름을 연결하는 백엔드 서비스로 활용했습니다.',
+        usage:
+          '식물 데이터 조회와 수정 흐름을 연결하는 백엔드 서비스로 활용했습니다.',
       },
       {
         name: 'TypeScript',
-        usage: '날짜 계산과 상세 모달 상태를 다루는 로직을 타입 기반으로 정리했습니다.',
+        usage:
+          '날짜 계산과 상세 모달 상태를 다루는 로직을 타입 기반으로 정리했습니다.',
       },
     ],
     troubleShooting: plantifulTroubleShooting,
@@ -436,13 +440,34 @@ export const projects: Project[] = [
     color: 'sage',
     images: [
       { src: '/projects/plantiful/plantiful.jpg', alt: 'Plantiful 홈 화면' },
-      { src: '/projects/plantiful/plantiful1.jpg', alt: 'Plantiful 식물 목록 화면' },
-      { src: '/projects/plantiful/plantiful2.jpg', alt: 'Plantiful 식물 상세 화면' },
-      { src: '/projects/plantiful/plantiful3.jpg', alt: 'Plantiful 상태 탭 화면' },
-      { src: '/projects/plantiful/plantiful4.jpg', alt: 'Plantiful 설정 탭 화면' },
-      { src: '/projects/plantiful/plantiful5.jpg', alt: 'Plantiful 식물 수정 화면' },
-      { src: '/projects/plantiful/plantiful6.jpg', alt: 'Plantiful 관리 주기 정보 화면' },
-      { src: '/projects/plantiful/plantiful7.jpg', alt: 'Plantiful 마이페이지 화면' },
+      {
+        src: '/projects/plantiful/plantiful1.jpg',
+        alt: 'Plantiful 식물 등록 화면 1',
+      },
+      {
+        src: '/projects/plantiful/plantiful2.jpg',
+        alt: 'Plantiful 식물 등록 화면 2',
+      },
+      {
+        src: '/projects/plantiful/plantiful3.jpg',
+        alt: 'Plantiful 알림 센터',
+      },
+      {
+        src: '/projects/plantiful/plantiful4.jpg',
+        alt: 'Plantiful 마이페이지',
+      },
+      {
+        src: '/projects/plantiful/plantiful5.jpg',
+        alt: 'Plantiful 로그인 화면',
+      },
+      {
+        src: '/projects/plantiful/plantiful6.jpg',
+        alt: 'Plantiful 식물 상세 화면',
+      },
+      {
+        src: '/projects/plantiful/plantiful7.jpg',
+        alt: 'Plantiful 식물 수정 화면',
+      },
     ],
     star: plantifulStar,
     details: createProjectDetails({
@@ -467,7 +492,8 @@ export const projects: Project[] = [
     techHighlights: [
       {
         name: 'StompJS',
-        usage: '실시간 채팅과 경매 이벤트를 구독하고 UI 상태에 반영하는 흐름을 구현했습니다.',
+        usage:
+          '실시간 채팅과 경매 이벤트를 구독하고 UI 상태에 반영하는 흐름을 구현했습니다.',
       },
       {
         name: 'React Query',
@@ -487,15 +513,15 @@ export const projects: Project[] = [
     images: [
       {
         src: '/projects/used-market/used-market1.png',
-        alt: 'Used Market 상품 목록 화면',
+        alt: 'Used Market 홈 화면',
       },
       {
         src: '/projects/used-market/used-market2.png',
-        alt: 'Used Market 상품 상세 및 경매 화면',
+        alt: 'Used Market 상품 목록',
       },
       {
         src: '/projects/used-market/used-market3.png',
-        alt: 'Used Market 채팅 화면',
+        alt: 'Used Market 상품 상세 페이지',
       },
     ],
     color: 'orange',
