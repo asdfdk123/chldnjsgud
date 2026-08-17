@@ -305,7 +305,7 @@ export const projects: Project[] = [
     troubleShooting: parkybaraTroubleShooting,
     troubleShootings: [parkybaraTroubleShooting],
     outcomes: parkybaraStar.learning,
-    links: {},
+    links: { github: 'https://github.com/Team-Capybaras/goorm-comma' },
     color: 'sage',
     images: [
       {
