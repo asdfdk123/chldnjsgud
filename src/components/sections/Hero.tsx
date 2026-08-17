@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, ChevronDown, ExternalLink, Mail } from 'lucide-react';
+import { ArrowRight, ChevronDown, Download, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { socialLinks } from '@/src/data/profile';
 
@@ -121,7 +121,9 @@ export function Hero() {
 
           <h1 className="text-coffee font-serif text-5xl leading-[1.18] font-bold md:text-6xl lg:text-7xl">
             <span className="block overflow-hidden">
-              <RevealLine delay={0.15}>충돌을 정리하고 흐름을 설계하는</RevealLine>
+              <RevealLine delay={0.15}>
+                충돌을 정리하고 흐름을 설계하는
+              </RevealLine>
             </span>
             <span className="block overflow-hidden">
               <RevealLine delay={0.3} className="text-gradient">
@@ -181,23 +183,24 @@ export function Hero() {
             </Link>
 
             <a
-              href={socialLinks.github}
+              href={socialLinks.resume}
               target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub 프로필 보기"
+              rel="noopener noreferrer"
+              aria-label="최원형 이력서 새 탭에서 보기"
               className="btn-outline inline-flex items-center justify-center gap-2"
             >
-              GitHub 보기
-              <ExternalLink size={17} />
+              이력서 보기
+              <FileText size={17} />
             </a>
 
             <a
-              href="#contact"
-              aria-label="연락 섹션으로 이동"
+              href={socialLinks.resume}
+              download="최원형_프론트엔드_개발자_이력서.pdf"
+              aria-label="최원형 이력서 PDF 다운로드"
               className="btn-outline inline-flex items-center justify-center gap-2"
             >
-              연락하기
-              <Mail size={17} />
+              이력서 다운로드
+              <Download size={17} />
             </a>
           </motion.div>
         </div>

@@ -2,6 +2,7 @@ export const socialLinks = {
   github: 'https://github.com/asdfdk123',
   blog: 'https://velog.io/@dnjsgud',
   email: 'mailto:cwh0607@naver.com',
+  resume: '/resume/choi-wonhyeong-resume.pdf',
 };
 
 export interface StrengthCard {
